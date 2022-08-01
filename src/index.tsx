@@ -1,19 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { theme } from './theme';
+import reset from 'styled-reset';
+import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+	document.getElementById('root') as HTMLElement,
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    line-height: 1;
+    font-family: 'Source Sans Pro', sans-serif;
+    color:${(props) => props.theme.white.darker};
+    background-color: black;
+    overflow-x: hidden;
+  }
+  a {
+    text-decoration: none;
+    color:inherit;
+  }
+`;
+const client = new QueryClient();
+root.render(
+	<React.StrictMode>
+		<RecoilRoot>
+			<QueryClientProvider client={client}>
+				<ThemeProvider theme={theme}>
+					<GlobalStyle />
+					<App />
+				</ThemeProvider>
+			</QueryClientProvider>
+		</RecoilRoot>
+	</React.StrictMode>,
+);
