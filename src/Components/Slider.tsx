@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
-import { motion, AnimatePresence, useViewportScroll } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { makeImagePath } from '../utils';
 import useWindowDimensions from './useWidowDimensions';
 import { useNavigate, useMatch } from 'react-router-dom';
@@ -17,7 +17,7 @@ import {
 	ITvShowsDetail,
 	TvShowType,
 	getTvShowsDetail,
-	getTv,
+	getTvShow,
 } from '../api';
 
 export const SliderContentWrap = styled.article`
@@ -25,11 +25,6 @@ export const SliderContentWrap = styled.article`
 	top: -100px;
 	& + & {
 		margin-top: 100px;
-	}
-	@media screen and (max-width: 1000px) {
-		& + & {
-			margin-top: 50px;
-		}
 	}
 `;
 
@@ -46,12 +41,6 @@ export const CategoryTitle = styled.h2`
 export const SliderWrap = styled.div`
 	height: 200px;
 	position: relative;
-	@media screen and (max-width: 1000px) {
-		height: 150px;
-	}
-	@media screen and (max-width: 500px) {
-		height: 80px;
-	}
 `;
 
 // 슬라이드가 되는 Row행(6개 노출)
@@ -61,7 +50,7 @@ export const Row = styled(motion.div)`
 	margin-bottom: 10px;
 	gap: 5px;
 	position: absolute;
-	height: 100%;
+	height: 200px;
 	width: 100%;
 `;
 
@@ -71,7 +60,7 @@ export const Box = styled(motion.div)<{ bgphoto: string }>`
 	background-image: url(${(props) => props.bgphoto});
 	background-size: cover;
 	background-position: center center;
-	height: 100%;
+	height: 200px;
 	font-size: 64px;
 	cursor: pointer;
 	&:first-child {
@@ -96,7 +85,7 @@ export const Info = styled(motion.div)`
 		font-size: 18px;
 		font-weight: bold;
 	}
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1024px) {
 		p {
 			font-size: 14px;
 			line-height: 18px;
@@ -218,11 +207,36 @@ export const PopupSubInfo = styled.div`
 	position: absolute;
 	bottom: 20px;
 	font-size: 20px;
-	font-weight: 600;
 	div {
+		span {
+			position: relative;
+			padding-left: 10px;
+			margin-right: 10px;
+		}
+		span:before {
+			display: block;
+			width: 4px;
+			height: 4px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			border-radius: 50%;
+			margin-top: -2px;
+			content: '';
+			background-color: ${(props) => props.theme.white.darker};
+		}
 		span:first-child {
 			color: #808e9b;
+			margin-right: 12px;
+			font-weight: 600;
+			padding-left: 0;
 		}
+		span:first-child:before {
+			display: none;
+		}
+	}
+	div + div {
+		margin-top: 16px;
 	}
 `;
 
@@ -278,6 +292,9 @@ export const infoVariants = {
 	},
 };
 
+//  슬라이드 노출 View 갯수
+export const offset = 6;
+
 export const SliderMovie = ({
 	type,
 	query,
@@ -286,10 +303,6 @@ export const SliderMovie = ({
 	query: string;
 }) => {
 	const NETFLIX_LOGO = useRecoilValue(NETFLIX_LOGO_URL);
-
-	// 영화 슬라이드 노출 View 갯수
-	const offset = 6;
-
 	// 윈도우 사이즈 측정 -> Resize Hook
 	const resizeWindowWidth = useWindowDimensions();
 
@@ -318,19 +331,19 @@ export const SliderMovie = ({
 
 	useEffect(() => {
 		if (type === MovieType.now_playing) {
-			setSlideTitle('현재 상영중');
+			setSlideTitle('지금 바로 시청 가능');
 		}
 
 		if (type === MovieType.top_rated) {
-			setSlideTitle('최고 평점을 받은 영화');
+			setSlideTitle('평단의 찬사를 받은 콘텐츠');
 		}
 
 		if (type === MovieType.popular) {
-			setSlideTitle('인기가 많은 영화들');
+			setSlideTitle('모두가 가장 좋아하는');
 		}
 
 		if (type === MovieType.upcoming) {
-			setSlideTitle('곧 찾아옵니다!!');
+			setSlideTitle('공계 예정작!');
 		}
 	}, []);
 
@@ -486,13 +499,13 @@ export const SliderMovie = ({
 
 										<PopupSubInfo>
 											<div>
-												<span>Genres: </span>
+												<span>Genres:</span>
 												{clickedMovieDetail?.genres.map((data) => (
 													<span>{data.name}</span>
 												))}
 											</div>
 											<div>
-												<span>Language: </span>
+												<span>Language:</span>
 												{clickedMovieDetail?.original_language.toUpperCase()}
 											</div>
 										</PopupSubInfo>
@@ -516,8 +529,6 @@ export const SliderTvShow = ({
 	query: string;
 }) => {
 	const NETFLIX_LOGO = useRecoilValue(NETFLIX_LOGO_URL);
-	// 영화 슬라이드 노출 View 갯수
-	const offset = 6;
 
 	// 윈도우 사이즈 측정 -> Resize Hook
 	const resizeWindowWidth = useWindowDimensions();
@@ -531,7 +542,7 @@ export const SliderTvShow = ({
 	// 전달받은 Props => Type 값으로 useQuery 데이터 조회(영화, TV)
 
 	const { data } = useQuery<IGetTvShowsResult>([`${query}`, type], () =>
-		getTv(type),
+		getTvShow(type),
 	);
 
 	//  슬라이드 Index
@@ -726,13 +737,13 @@ export const SliderTvShow = ({
 
 										<PopupSubInfo>
 											<div>
-												<span>Genres: </span>
+												<span>Genres:</span>
 												{clickedTvDetail?.genres.map((data) => (
-													<span> {data.name} </span>
+													<span>{data.name} </span>
 												))}
 											</div>
 											<div>
-												<span>Language: </span>
+												<span>Language:</span>
 												{clickedTvDetail?.original_language.toUpperCase()}
 											</div>
 										</PopupSubInfo>

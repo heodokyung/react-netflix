@@ -36,6 +36,9 @@ const TemplateBox = styled.div`
 	column-gap: 10px;
 	row-gap: 50px;
 	margin-bottom: 100px;
+	${Box} {
+		height: 200px;
+	}
 `;
 
 const TextExcept = styled.div`
@@ -46,7 +49,6 @@ const TextExcept = styled.div`
 `;
 
 export function MoviesSearchResults({ keyword }: { keyword: string | null }) {
-	console.log('keyword=====>', keyword);
 	const NETFLIX_LOGO = useRecoilValue(NETFLIX_LOGO_URL);
 	const navigate = useNavigate();
 	const bigMovieMatch = useMatch(`/search/:movieId`);
@@ -67,6 +69,8 @@ export function MoviesSearchResults({ keyword }: { keyword: string | null }) {
 				page: 2,
 			}),
 		);
+
+	console.log(dataFirst);
 
 	const noData = dataFirst?.total_pages!! < 1;
 
@@ -93,7 +97,7 @@ export function MoviesSearchResults({ keyword }: { keyword: string | null }) {
 
 	return noData ? (
 		<TextExcept>No search results</TextExcept>
-	) : isLoadingFirst && isLoadingSecond ? (
+	) : isLoadingFirst ? (
 		<TextExcept>Loading . . .</TextExcept>
 	) : (
 		<>
@@ -123,7 +127,7 @@ export function MoviesSearchResults({ keyword }: { keyword: string | null }) {
 						</Info>
 					</Box>
 				))}
-				{dataSecond?.results.map((movie) => (
+				{/* {dataSecond?.results.map((movie) => (
 					<Box
 						layoutId={movie.id.toString()}
 						key={movie.id}
@@ -147,7 +151,7 @@ export function MoviesSearchResults({ keyword }: { keyword: string | null }) {
 							<p>{movie.title}</p>
 						</Info>
 					</Box>
-				))}
+				))} */}
 			</TemplateBox>
 			<AnimatePresence>
 				{bigMovieMatch ? (
@@ -250,8 +254,6 @@ export function TvsSearchResults({ keyword }: { keyword: string | null }) {
 			getTvShowsDetail(popupDetailMatch?.params.tvId),
 		);
 
-	console.log('aaaaaaaaaaaaaaaa=>', clickedTvDetail);
-
 	return noData ? (
 		<TextExcept>No search results</TextExcept>
 	) : isLoadingFirst && isLoadingSecond ? (
@@ -281,7 +283,7 @@ export function TvsSearchResults({ keyword }: { keyword: string | null }) {
 						</Info>
 					</Box>
 				))}
-				{dataSecond?.results.map((tv) => (
+				{/* {dataSecond?.results.map((tv) => (
 					<Box
 						layoutId={tv.id.toString()}
 						key={tv.id}
@@ -302,7 +304,7 @@ export function TvsSearchResults({ keyword }: { keyword: string | null }) {
 							<p>{tv.name}</p>
 						</Info>
 					</Box>
-				))}
+				))} */}
 			</TemplateBox>
 			<AnimatePresence>
 				{popupDetailMatch ? (

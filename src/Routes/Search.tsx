@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
 	MoviesSearchResults,
 	TvsSearchResults,
@@ -74,6 +75,11 @@ function Search() {
 	return (
 		<>
 			<Wrapper>
+				<HelmetProvider>
+					<Helmet>
+						<title>검색결과 - 넷플릭스</title>
+					</Helmet>
+				</HelmetProvider>
 				<BtnsWrap>
 					<CategoryButton
 						onClick={() => {
@@ -130,9 +136,7 @@ function Search() {
 						</motion.span>
 					</CategoryButton>
 				</BtnsWrap>
-				<Keyword>
-					Search: {keyword},{category}
-				</Keyword>
+				<Keyword>Search: {keyword}</Keyword>
 				{category ? (
 					<MoviesSearchResults keyword={keyword} />
 				) : (

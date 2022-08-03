@@ -1,10 +1,5 @@
 import { atom } from 'recoil';
 
-export const searchVisible = atom({
-	key: 'searchVisible',
-	default: false,
-});
-
 // 기본 넷플릭스 이미지
 export const NETFLIX_LOGO_URL = atom({
 	key: 'defaultSlideImg',

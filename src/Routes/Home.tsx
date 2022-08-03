@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { NETFLIX_LOGO_URL } from '../atoms';
 import { Loader, Wrapper, Visual, VisualOverview, VisualTitle } from './../App';
 import { SliderMovie } from '../Components/Slider';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Home = () => {
 	// 초기 화면 보여주기 (숫자 랜덤 생성)
@@ -15,6 +16,7 @@ const Home = () => {
 	};
 
 	const NETFLIX_LOGO = useRecoilValue(NETFLIX_LOGO_URL);
+
 	// 초기 화면 셋팅 Random 숫자
 	useEffect(() => {
 		setRandom(getRandom(0, 20));
@@ -27,6 +29,11 @@ const Home = () => {
 
 	return (
 		<Wrapper>
+			<HelmetProvider>
+				<Helmet>
+					<title>홈 - 넷플릭스</title>
+				</Helmet>
+			</HelmetProvider>
 			{isLoading ? (
 				<Loader>Loading...</Loader>
 			) : (
@@ -34,7 +41,6 @@ const Home = () => {
 					<Visual
 						bgphoto={makeImagePath(
 							data?.results[random].backdrop_path || NETFLIX_LOGO,
-							'w500',
 						)}
 					>
 						<VisualTitle>{data?.results[random].title}</VisualTitle>

@@ -1,10 +1,7 @@
 // 임시 API KEY
 
 import axios from 'axios';
-
-const BASE_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = '10923b261ba94d897ac6b81148314a3f';
-
 const api = axios.create({
 	baseURL: 'https://api.themoviedb.org/3/',
 	params: {
@@ -81,7 +78,7 @@ export interface IGetMoviesResult {
 	total_results: number;
 }
 
-interface ITvShow {
+export interface ITvShow {
 	backdrop_path: string;
 	first_air_date: string;
 	genre_ids: number[];
@@ -171,12 +168,12 @@ airing_today :
 ************************************/
 
 // 영화 정보 가져오기
-export const getMovies = async (type: MovieType = MovieType.now_playing) => {
+export const getMovies = async (type: string) => {
 	return await api.get(`/movie/${type}`).then((response) => response.data);
 };
 
 // Tv 정보 가져오기
-export const getTv = async (type: TvShowType = TvShowType.on_the_air) => {
+export const getTvShow = async (type: string) => {
 	return await api.get(`/tv/${type}`).then((response) => response.data);
 };
 
@@ -200,6 +197,6 @@ export const getSearchResult = async ({
 	page: number;
 }) => {
 	return await api
-		.get(`/search/${category}`, { params: { query: keyword } })
+		.get(`/search/${category}`, { params: { query: keyword, page } })
 		.then((response) => response.data);
 };

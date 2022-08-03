@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getTv, IGetMoviesResult, TvShowType } from '../api';
+import { getTvShow, IGetMoviesResult, TvShowType } from '../api';
 import { useQuery } from 'react-query';
 import { makeImagePath } from './../utils';
 import { useRecoilValue } from 'recoil';
 import { NETFLIX_LOGO_URL } from '../atoms';
 import { Loader, Wrapper, Visual, VisualOverview, VisualTitle } from './../App';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { SliderTvShow } from '../Components/Slider';
 
 const Tv = () => {
@@ -22,11 +23,16 @@ const Tv = () => {
 
 	const { data, isLoading } = useQuery<IGetMoviesResult>(
 		['tv', 'airing_today'],
-		() => getTv(TvShowType.airing_today),
+		() => getTvShow(TvShowType.airing_today),
 	);
 
 	return (
 		<Wrapper>
+			<HelmetProvider>
+				<Helmet>
+					<title>TV SHOW - 넷플릭스</title>
+				</Helmet>
+			</HelmetProvider>
 			{isLoading ? (
 				<Loader>Loading...</Loader>
 			) : (
@@ -34,7 +40,6 @@ const Tv = () => {
 					<Visual
 						bgphoto={makeImagePath(
 							data?.results[random].backdrop_path || NETFLIX_LOGO,
-							'w500',
 						)}
 					>
 						<VisualTitle>{data?.results[random].title}</VisualTitle>
@@ -47,8 +52,8 @@ const Tv = () => {
 					</Visual>
 
 					<SliderTvShow type={TvShowType.airing_today} query={'tv'} />
-					<SliderTvShow type={TvShowType.on_the_air} query={'tv'} />
 					<SliderTvShow type={TvShowType.popular} query={'tv'} />
+					<SliderTvShow type={TvShowType.on_the_air} query={'tv'} />
 					<SliderTvShow type={TvShowType.top_rated} query={'tv'} />
 				</>
 			)}

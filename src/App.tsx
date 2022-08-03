@@ -9,6 +9,7 @@ import styled from 'styled-components';
 // 영화, TV 공통 사용 Style
 export const Wrapper = styled.div`
 	background: black;
+	min-width: 1024px;
 `;
 
 // useQuery로 데이터 받아올 때 Loading 처리
@@ -36,11 +37,8 @@ export const Visual = styled.div<{ bgphoto: string }>`
 export const VisualTitle = styled.h1`
 	font-size: 62px;
 	font-weight: bold;
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1024px) {
 		font-size: 48px;
-	}
-	@media screen and (max-width: 500px) {
-		font-size: 32px;
 	}
 	margin-bottom: 20px;
 `;
@@ -50,39 +48,29 @@ export const VisualOverview = styled.p`
 	font-size: 24px;
 	line-height: 32px;
 	width: 50%;
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1024px) {
 		width: 100%;
 		font-size: 22px;
 		line-height: 26px;
-	}
-	@media screen and (max-width: 500px) {
-		width: 100%;
-		font-size: 18px;
-		line-height: 24px;
 	}
 `;
 
 function App() {
 	return (
-		<BrowserRouter>
-			{/* <BrowserRouter basename={process.env.PUBLIC_URL}>			 */}
+		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<Header />
 			<Routes>
-				{/*
-					** react-router-dom v6 **
-					v6에서는 array to path를 지원하지 않음
-					Nested Route를 사용 -> 슬라이드 목록을 클릭했을 경우 레이어모달로 확대기능을 구현하기 위함
-					*/}
+				<Route path='/' element={<Home />}>
+					<Route path='/movie/:category/:movieId' element={<Home />} />
+				</Route>
+				<Route path='/tv' element={<Tv />}>
+					<Route path='/tv/:category/:tvId' element={<Tv />} />
+				</Route>
 
-				<Route path='/' element={<Home />} />
-				<Route path='/movie/:category/:movieId' element={<Home />} />
-				<Route path='/tv' element={<Tv />} />
-				<Route path='/tv/:category/:tvId' element={<Tv />} />
-				<Route path='/search' element={<Search />} />
-				<Route path='/:movieId' element={<Search />} />
-				<Route path='/:tvId' element={<Search />} />
-				<Route path='/search/:movieId' element={<Search />} />
-				<Route path='/search/:tvId' element={<Search />} />
+				<Route path='/search' element={<Search />}>
+					<Route path='/search/:movieId' element={<Search />} />
+					<Route path='/search/:tvId' element={<Search />} />
+				</Route>
 			</Routes>
 		</BrowserRouter>
 	);
