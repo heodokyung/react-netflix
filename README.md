@@ -1,5 +1,7 @@
 # React - Netflix (React 넷플릭스)
 
+![netflix_logo](https://user-images.githubusercontent.com/50813871/182531598-d2c4bc3b-0823-4ba5-9e4b-d173bac271db.png)
+
 ## 사이트 설명
 OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니다.
 영화 목록과 TvShow 목록을 사용자가 선태하여 확인할 수 있고 검색창을 통해 원하는 영화, TvShow도 상세히 검색할 수 있습니다.
