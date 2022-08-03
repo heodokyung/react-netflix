@@ -1,6 +1,6 @@
 # React - Netflix (React 넷플릭스)
+<div align="center"><img src="https://user-images.githubusercontent.com/50813871/182531598-d2c4bc3b-0823-4ba5-9e4b-d173bac271db.png" alt="netflix Logo" width="270px" height="auto"></div>
 
-![netflix_logo](https://user-images.githubusercontent.com/50813871/182531598-d2c4bc3b-0823-4ba5-9e4b-d173bac271db.png)
 
 ## 사이트 설명
 OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니다.
