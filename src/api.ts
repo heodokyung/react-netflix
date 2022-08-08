@@ -26,7 +26,12 @@ export interface IMovie {
 	vote_average: number;
 	vote_count: number;
 }
-
+export interface IGetMoviesResult {
+	page: number;
+	results: IMovie[];
+	total_pages: number;
+	total_results: number;
+}
 export interface IGetMovieDetail {
 	adult: boolean;
 	backdrop_path: string;
@@ -67,15 +72,11 @@ export interface IGetMovieDetail {
 	tagline: string;
 	title: string;
 	video: boolean;
+	videos: {
+		results: [];
+	};
 	vote_average: number;
 	vote_count: number;
-}
-
-export interface IGetMoviesResult {
-	page: number;
-	results: IMovie[];
-	total_pages: number;
-	total_results: number;
 }
 
 export interface ITvShow {
@@ -92,12 +93,6 @@ export interface ITvShow {
 	poster_path: string;
 	vote_average: number;
 	vote_count: number;
-}
-
-export interface IGetTvShowsResult {
-	page: number;
-	results: ITvShow[];
-	total_pages: number;
 }
 
 export interface ITvShowsDetail {
@@ -136,6 +131,34 @@ export interface ITvShowsDetail {
 	vote_average: number;
 	vote_count: number;
 }
+export interface IGetCommonDetail {
+	adult: boolean;
+	backdrop_path: string;
+	homepage: string;
+	id: number;
+	genres: [
+		{
+			id: number;
+			name: string;
+		},
+	];
+	original_language: string;
+	overview: string;
+	vote_average: number;
+	vote_count: number;
+	popularity: number;
+	poster_path: string;
+
+	// MOVIE 일때만
+	original_title?: string;
+	release_date?: string;
+	title?: string;
+	runtime?: number;
+	// TV일때만
+	original_name?: string;
+	first_air_date?: string;
+	last_air_date?: string;
+}
 
 export enum MovieType {
 	'now_playing' = 'now_playing',
@@ -144,59 +167,59 @@ export enum MovieType {
 	'upcoming' = 'upcoming',
 }
 
-export enum TvShowType {
-	'on_the_air' = 'on_the_air',
-	'airing_today' = 'airing_today',
-	'popular' = 'popular',
-	'top_rated' = 'top_rated',
-}
-
-/************************************
-https://developers.themoviedb.org/3/movies/get-movie-details
-* - 공통
-* latest : 최신
-* top_rated : 높은 평점
-* popular : 인기있는
-
-- 영화
-* upcoming : 곧 예정
-* now_playing
-
-- TV
-on_the_air : TV 온에어
-airing_today :
-************************************/
-
-// 영화 정보 가져오기
+// 영화 목록
 export const getMovies = async (type: string) => {
-	return await api.get(`/movie/${type}`).then((response) => response.data);
-};
-
-// Tv 정보 가져오기
-export const getTvShow = async (type: string) => {
-	return await api.get(`/tv/${type}`).then((response) => response.data);
+	return await api.get(`movie/${type}`).then((response) => response.data);
 };
 
 // 영화 정보 상세
-export const getMovieDetail = async (movieId: string | undefined) => {
-	return await api.get(`/movie/${movieId}`).then((response) => response.data);
+export const getMovieDetail = async (id: string | undefined) => {
+	return await api.get(`movie/${id}`).then((response) => response.data);
 };
 
-// Tv 정보 상세
-export const getTvShowsDetail = async (tvId: string | undefined) => {
-	return await api.get(`/tv/${tvId}`).then((response) => response.data);
+// 영화,TV 공통 상세 사용
+export const getDetailCommon = async (
+	category: string | undefined,
+	id: string | undefined,
+) => {
+	return await api.get(`${category}/${id}`).then((response) => response.data);
 };
 
-export const getSearchResult = async ({
-	keyword,
-	category,
-	page,
-}: {
-	keyword: string | null;
-	category: string;
-	page: number;
-}) => {
-	return await api
-		.get(`/search/${category}`, { params: { query: keyword, page } })
-		.then((response) => response.data);
+export const commonApi = {
+	detail: (category: string, id: number | undefined) =>
+		api.get(`${category}/${id}`, { params: { append_to_response: 'videos' } }),
+	keywords: (category: string, id: number | undefined) =>
+		api.get(`${category}/${id}/keywords`),
+	credits: (category: string, id: number | undefined) =>
+		api.get(`${category}/${id}/credits`),
+	search: (keyword: string | null, category: string, page: number) =>
+		api.get(`search/${category}`, { params: { query: keyword, page } }),
+	images: (category: string, id: number | undefined) =>
+		api.get(`${category}/${id}/images`, {
+			params: { include_image_language: 'kr,null' },
+		}),
+	recommendations: (category: string, id: number | undefined) =>
+		api.get(`${category}/${id}/recommendations`),
+};
+
+export const movieApi = {
+	popularInfinite: (page: number) =>
+		api.get(`movie/popular`, { params: { page } }),
+	nowPlayingInfinite: (page: number) =>
+		api.get(`movie/now_playing`, { params: { page } }),
+	upcomingInfinite: (page: number) =>
+		api.get(`movie/upcoming`, { params: { page } }),
+	topRatedInfinite: (page: number) =>
+		api.get(`movie/top_rated`, { params: { page } }),
+};
+
+export const tvShowApi = {
+	popularInfinite: (page: number) =>
+		api.get(`tv/popular`, { params: { page } }),
+	airingTodayInfinite: (page: number) =>
+		api.get(`tv/airing_today`, { params: { page } }),
+	onTheAirInfinite: (page: number) =>
+		api.get(`tv/on_the_air`, { params: { page } }),
+	topRatedInfinite: (page: number) =>
+		api.get(`tv/top_rated`, { params: { page } }),
 };

@@ -6,7 +6,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
 	MoviesSearchResults,
 	TvsSearchResults,
-} from '../Components/SearchResults';
+} from '../Components/search/SearchResults';
 
 const Wrapper = styled.div`
 	margin: 150px 60px 0px 90px;
@@ -68,6 +68,7 @@ const btnTextVariants = {
 function Search() {
 	const location = useLocation();
 	const urlParams = new URLSearchParams(location.search);
+	console.log(urlParams);
 	const keyword = urlParams.get('keyword');
 	const [category, setCategory] = useState(true);
 	const navigate = useNavigate();
@@ -84,7 +85,6 @@ function Search() {
 					<CategoryButton
 						onClick={() => {
 							setCategory(true);
-							urlParams.set('category', 'movie');
 							navigate(`/search/?${urlParams.toString()}`);
 						}}
 					>
@@ -111,7 +111,6 @@ function Search() {
 					<CategoryButton
 						onClick={() => {
 							setCategory(false);
-							urlParams.set('category', 'tv');
 							navigate(`/search/?${urlParams.toString()}`);
 						}}
 					>
@@ -136,7 +135,7 @@ function Search() {
 						</motion.span>
 					</CategoryButton>
 				</BtnsWrap>
-				<Keyword>Search: {keyword}</Keyword>
+				<Keyword>검색어: {keyword}</Keyword>
 				{category ? (
 					<MoviesSearchResults keyword={keyword} />
 				) : (

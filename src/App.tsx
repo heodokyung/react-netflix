@@ -1,15 +1,16 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Routes/Home';
-import Search from './Routes/Search';
-import Tv from './Routes/Tv';
-import Header from './Components/Header';
 import styled from 'styled-components';
+import TvShowView from './Routes/TvShowView';
+import HeaderView from './Components/HeaderView';
+import MovieView from './Routes/MovieView';
+import Search from './Routes/Search';
+import FooterView from './Components/FooterView';
 
 // 영화, TV 공통 사용 Style
 export const Wrapper = styled.div`
 	background: black;
-	min-width: 1024px;
+	padding-top: 73px;
 `;
 
 // useQuery로 데이터 받아올 때 Loading 처리
@@ -22,14 +23,14 @@ export const Loader = styled.div`
 
 // 메인 배경 Visual
 export const Visual = styled.div<{ bgphoto: string }>`
-	height: 100vh;
+	height: 70vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	padding: 60px;
 	background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
 		url(${(props) => props.bgphoto});
-	background-position: center center;
+	background-position: top center;
 	background-size: cover;
 `;
 
@@ -58,13 +59,16 @@ export const VisualOverview = styled.p`
 function App() {
 	return (
 		<BrowserRouter basename={process.env.PUBLIC_URL}>
-			<Header />
+			<HeaderView />
 			<Routes>
-				<Route path='/' element={<Home />}>
-					<Route path='/movie/:category/:movieId' element={<Home />} />
+				<Route path='/' element={<Home />} />
+
+				<Route path='/movie/:category' element={<MovieView />}>
+					<Route path='/movie/:category/:movieId' element={<MovieView />} />
 				</Route>
-				<Route path='/tv' element={<Tv />}>
-					<Route path='/tv/:category/:tvId' element={<Tv />} />
+
+				<Route path='/tv/:category/' element={<TvShowView />}>
+					<Route path='/tv/:category/:tvId' element={<TvShowView />} />
 				</Route>
 
 				<Route path='/search' element={<Search />}>

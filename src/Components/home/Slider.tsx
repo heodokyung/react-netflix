@@ -2,27 +2,21 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { makeImagePath } from '../utils';
-import useWindowDimensions from './useWidowDimensions';
+import { makeImagePath } from '../../utils';
+import useWindowDimensions from '../useWidowDimensions';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { NETFLIX_LOGO_URL } from '../atoms';
+import { NETFLIX_LOGO_URL } from '../../atoms';
 import {
 	getMovieDetail,
 	getMovies,
 	IGetMovieDetail,
 	IGetMoviesResult,
 	MovieType,
-	IGetTvShowsResult,
-	ITvShowsDetail,
-	TvShowType,
-	getTvShowsDetail,
-	getTvShow,
-} from '../api';
+} from '../../api';
 
 export const SliderContentWrap = styled.article`
 	position: relative;
-	top: -100px;
 	& + & {
 		margin-top: 100px;
 	}
@@ -381,7 +375,7 @@ export const SliderMovie = ({
 
 	// 팝업 활성화 후 뒤에 암막 클릭시 -> 팝업 닫히고 주소 초기화
 	const onOverlayClick = () => {
-		navigate('/');
+		navigate('/movie');
 	};
 
 	// 슬라이드 박스 클릭했을 때
@@ -507,244 +501,6 @@ export const SliderMovie = ({
 											<div>
 												<span>Language:</span>
 												{clickedMovieDetail?.original_language.toUpperCase()}
-											</div>
-										</PopupSubInfo>
-									</>
-								)}
-							</PopupDetail>
-						</>
-					) : null}
-				</AnimatePresence>
-			</SliderContentWrap>
-		</>
-	);
-};
-
-// Tv 슬라이드
-export const SliderTvShow = ({
-	type,
-	query,
-}: {
-	type: TvShowType;
-	query: string;
-}) => {
-	const NETFLIX_LOGO = useRecoilValue(NETFLIX_LOGO_URL);
-
-	// 윈도우 사이즈 측정 -> Resize Hook
-	const resizeWindowWidth = useWindowDimensions();
-
-	// React-route-dom의 v5 -> v6버전으로 변경되면서 변한점
-	// 1) v5에서 useHistory를 사용 -> v6에서는 useNavigate를 사용
-	// 2) v5에서 useRouteMatch를 사용 -> v6에서는 useMatch를 사용
-	const navigate = useNavigate();
-	const popupDetailMatch = useMatch(`/${query}/${type}/:id`);
-
-	// 전달받은 Props => Type 값으로 useQuery 데이터 조회(영화, TV)
-
-	const { data } = useQuery<IGetTvShowsResult>([`${query}`, type], () =>
-		getTvShow(type),
-	);
-
-	//  슬라이드 Index
-	const [index, setIndex] = useState(0);
-
-	// 애니메이션 중복효과를 막는 함수 -> 중복클릭 방지
-	const [leaving, setLeaving] = useState(false);
-	// 이전, 다음 체크하는 함수
-	const [clickReverse, setClickReverse] = useState(false);
-
-	// Title
-	const [slideTitle, setSlideTitle] = useState('');
-
-	useEffect(() => {
-		if (type === TvShowType.airing_today) {
-			setSlideTitle('오늘 TV Show방송');
-		}
-
-		if (type === TvShowType.on_the_air) {
-			setSlideTitle('TV Show ON Air');
-		}
-
-		if (type === TvShowType.popular) {
-			setSlideTitle('인기가 많은 TV Show들');
-		}
-
-		if (type === TvShowType.top_rated) {
-			setSlideTitle('평점이 높은 TV Show들');
-		}
-	}, []);
-
-	// 이전
-	const decreaseIndex = () => {
-		if (data) {
-			if (leaving) return;
-			setClickReverse(true);
-			toggleLeaving();
-			const totalList = data.results.length - 1;
-			const maxIndex = Math.floor(totalList / offset) - 1;
-			setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
-		}
-	};
-
-	// 다음
-	const increaseIndex = () => {
-		if (data) {
-			if (leaving) return;
-			setClickReverse(false);
-			toggleLeaving();
-			const totalList = data.results.length - 1;
-			const maxIndex = Math.floor(totalList / offset) - 1;
-			setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-		}
-	};
-
-	// 박스 Element에 hover시 커지는 효과
-	const toggleLeaving = () => setLeaving((prev) => !prev);
-
-	// 슬라이드 박스(영화,TV) 상세 클릭 -> 모달 팝업으로 내용 보여줌
-	const onBoxClicked = ({ id, category }: { id: number; category: string }) => {
-		navigate(`/${query}/${category}/${id}`);
-	};
-
-	// 팝업 활성화 후 뒤에 암막 클릭시 -> 팝업 닫히고 주소 초기화
-	const onOverlayClick = () => {
-		navigate('/tv');
-	};
-
-	// 슬라이드 박스 클릭했을 때
-	const clickedDetailInfo =
-		popupDetailMatch?.params.id &&
-		data?.results.find(
-			(item) => String(item.id) === popupDetailMatch.params.id,
-		);
-
-	// Tv정보 상세 가져오기
-	const { data: clickedTvDetail, isLoading: isLoadingTvDetail } =
-		useQuery<ITvShowsDetail>([popupDetailMatch?.params.id, 'detail'], () =>
-			getTvShowsDetail(popupDetailMatch?.params.id),
-		);
-
-	return (
-		<>
-			<SliderContentWrap>
-				<CategoryTitle>{slideTitle}</CategoryTitle>
-				<SliderWrap>
-					<AnimatePresence
-						initial={false}
-						onExitComplete={toggleLeaving}
-						custom={{ resizeWindowWidth, clickReverse }}
-					>
-						<Row
-							variants={rowVariants}
-							initial='hidden'
-							animate='visible'
-							exit='exit'
-							transition={{ type: 'tween', duration: 1 }}
-							key={type + index}
-							custom={{ resizeWindowWidth, clickReverse }}
-						>
-							{data?.results
-								.slice(1)
-								.slice(offset * index, offset * index + offset)
-								.map((item) => (
-									<Box
-										layoutId={type + item.id + ''}
-										key={type + item.id}
-										whileHover='hover'
-										initial='normal'
-										variants={boxVariants}
-										onClick={() =>
-											onBoxClicked({ id: item.id, category: type })
-										}
-										transition={{ type: 'tween' }}
-										bgphoto={
-											item.backdrop_path !== null
-												? makeImagePath(item.backdrop_path, 'w500')
-												: NETFLIX_LOGO
-										}
-									>
-										<Info variants={infoVariants}>
-											<p>{item.name}</p>
-										</Info>
-									</Box>
-								))}
-						</Row>
-					</AnimatePresence>
-					<BtnSlide type='button' onClick={decreaseIndex} isRight={false}>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 256 512'
-							fill='currentColor'
-						>
-							<path d='M137.4 406.6l-128-127.1C3.125 272.4 0 264.2 0 255.1s3.125-16.38 9.375-22.63l128-127.1c9.156-9.156 22.91-11.9 34.88-6.943S192 115.1 192 128v255.1c0 12.94-7.781 24.62-19.75 29.58S146.5 415.8 137.4 406.6z' />
-						</svg>
-					</BtnSlide>
-					<BtnSlide type='button' onClick={increaseIndex} isRight={true}>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 256 512'
-							fill='currentColor'
-						>
-							<path d='M118.6 105.4l128 127.1C252.9 239.6 256 247.8 256 255.1s-3.125 16.38-9.375 22.63l-128 127.1c-9.156 9.156-22.91 11.9-34.88 6.943S64 396.9 64 383.1V128c0-12.94 7.781-24.62 19.75-29.58S109.5 96.23 118.6 105.4z' />
-						</svg>
-					</BtnSlide>
-				</SliderWrap>
-				<AnimatePresence>
-					{popupDetailMatch ? (
-						<>
-							<OverlayMask
-								onClick={onOverlayClick}
-								exit={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-							/>
-							<PopupDetail layoutId={type + popupDetailMatch.params.id}>
-								{clickedDetailInfo && (
-									<>
-										<PopupDetailCover
-											bgphoto={
-												clickedDetailInfo.backdrop_path ||
-												clickedDetailInfo.poster_path !== null
-													? makeImagePath(
-															clickedDetailInfo.backdrop_path ||
-																clickedDetailInfo.poster_path,
-															'w500',
-													  )
-													: NETFLIX_LOGO
-											}
-										>
-											<PopupDetailTitle>
-												{clickedDetailInfo.name}
-											</PopupDetailTitle>
-											<PopupThumbInfo>
-												<p>
-													{(clickedTvDetail?.first_air_date as string) +
-														' ~ ' +
-														(new Date(
-															clickedTvDetail?.last_air_date as string,
-														) >
-														new Date(
-															new Date().getTime() - 1000 * 60 * 60 * 24 * 7,
-														)
-															? ''
-															: clickedTvDetail?.last_air_date)}
-												</p>
-												<p>⭐️ {clickedDetailInfo.vote_average}</p>
-											</PopupThumbInfo>
-										</PopupDetailCover>
-										<PopupDetailOverview>
-											<p>{clickedDetailInfo.overview}</p>
-										</PopupDetailOverview>
-
-										<PopupSubInfo>
-											<div>
-												<span>Genres:</span>
-												{clickedTvDetail?.genres.map((data) => (
-													<span>{data.name} </span>
-												))}
-											</div>
-											<div>
-												<span>Language:</span>
-												{clickedTvDetail?.original_language.toUpperCase()}
 											</div>
 										</PopupSubInfo>
 									</>

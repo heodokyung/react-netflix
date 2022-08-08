@@ -1,8 +1,13 @@
 # React - Netflix (React 넷플릭스)
 
 ## 사이트 설명
-OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니다.
-영화 목록과 TvShow 목록을 사용자가 선태하여 확인할 수 있고 검색창을 통해 원하는 영화, TvShow도 상세히 검색할 수 있습니다.
+OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니다. Axios를 이용해 The Movie DB로부터 영화 상세정보를 가져옵니다.
+영화 목록과 TvShow 목록을 사용자가 선택하여 인기 작품, 현재 상영중, 평점높은 콘텐츠를 확인할 수 있습니다.
+슬라이드 목록을 클릭하면 포스터와 제목, 개봉일, 평점, 설명을 확인할 수 있습니다.
+검색창을 통해 원하는 영화, TvShow도 상세히 검색할 수 있습니다.
+
+
+
 
 ## 적용기술
 - React-query: React-query를 적용하여 영화 리스트, 상세 정보를 조회합니다.
@@ -12,17 +17,18 @@ OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니�
 - styled-components: 사이트의 스타일은 CSS-IN-JS로 적용하였습니다.
 - axios: axios로 API 정보를 가져와서 return 합니다.
 - react-dom: 페이지 이동을 위해 사용하였습니다.
+- infinityScroll을 적용하여 스크롤을 하면 추가 데이터를 불러옵니다.
 
 
 ### 추후 개선사항 Check list
-- [ ] react-helmet: 상세 사이트의 이동시 Title값을 상세 정보에 맞게 변경합니다.
-- [ ] Slide 컴포넌트: 공통화(Movie, TvShow, 검색)
-- [ ] react-query: Infinite Queries 적용 (검색)
+- [x] react-helmet: 상세 사이트의 이동시 Title값을 상세 정보에 맞게 변경합니다.
+- [x] react-query: 개선
+- [x] 코드 리팩토링
 - [ ] API KEY: .env를 통한 암호화
-- [ ] 코드 리팩토링
+- [ ] 목록 상세 : Swiper 적용하기
 
 ## 사이트 바로가기
-<a href="https://heodokyung.github.io/react-netflix/" target="_blank">[토이프로젝트]암호화폐 코인시세 및 정보 사이트 만들기</a>
+<a href="https://heodokyung.github.io/react-netflix/" target="_blank">[토이프로젝트]React Netflix</a>
 
 
 ### npm i
