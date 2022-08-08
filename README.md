@@ -8,9 +8,9 @@ OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니�
 슬라이드 목록을 클릭하면 포스터와 제목, 개봉일, 평점, 설명을 확인할 수 있습니다.
 검색창을 통해 원하는 영화, TvShow도 상세히 검색할 수 있습니다.
 
-![1](https://user-images.githubusercontent.com/50813871/183362112-b397f506-e10a-411c-a697-6b7ee1641be6.gif)
-![fdfd](https://user-images.githubusercontent.com/50813871/183362466-cc08da3a-ce6a-4118-bb86-2812844b4489.gif)
-
+## 사이트 미리보기
+<div align="center"><img src="https://user-images.githubusercontent.com/50813871/183362112-b397f506-e10a-411c-a697-6b7ee1641be6.gif" alt="netflix Logo" width="600px" height="auto"></div>
+<div align="center"><img src="https://user-images.githubusercontent.com/50813871/183362466-cc08da3a-ce6a-4118-bb86-2812844b4489.gif" alt="netflix Logo" width="600px" height="auto"></div>
 
 
 ## 적용기술
@@ -31,10 +31,6 @@ OTT의 대표 사이트인 Netflix의 사이트를 React로 구현하였습니�
 - [ ] API KEY: .env를 통한 암호화
 - [ ] 목록 상세 : Swiper 적용하기
 
+
 ## 사이트 바로가기
 <a href="https://heodokyung.github.io/react-netflix/" target="_blank">[토이프로젝트]React Netflix</a>
-
-
-### npm i
-### npm start
-#### npm audit fix --force
