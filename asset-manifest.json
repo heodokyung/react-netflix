@@ -1,10 +1,18 @@
 {
   "files": {
-    "main.js": "/react-netflix/static/js/main.7d32512e.js",
+    "main.js": "/react-netflix/static/js/main.96800638.js",
+    "static/media/video_device.mp4": "/react-netflix/static/media/video_device.3456030a286d77a3f4ab.mp4",
+    "static/media/video_tv.m4v": "/react-netflix/static/media/video_tv.053994fc9a5da7a97b5b.m4v",
+    "static/media/icon_kid.png": "/react-netflix/static/media/icon_kid.bd003beb0e5ed932811a.png",
+    "static/media/icon_device.png": "/react-netflix/static/media/icon_device.8e6539e8bfc6937a0648.png",
+    "static/media/icon_mobile.jpg": "/react-netflix/static/media/icon_mobile.063578d5b6d5ab4155ec.jpg",
+    "static/media/noPoster.png": "/react-netflix/static/media/noPoster.8a5ba7e5187f7207c445.png",
+    "static/media/icon_tv.png": "/react-netflix/static/media/icon_tv.0049bc70babc1f94cf88.png",
     "index.html": "/react-netflix/index.html",
-    "main.7d32512e.js.map": "/react-netflix/static/js/main.7d32512e.js.map"
+    "static/media/loading.svg": "/react-netflix/static/media/loading.9b5373b74234fb0d70042105556631f0.svg",
+    "main.96800638.js.map": "/react-netflix/static/js/main.96800638.js.map"
   },
   "entrypoints": [
-    "static/js/main.7d32512e.js"
+    "static/js/main.96800638.js"
   ]
 }
