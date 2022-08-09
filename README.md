@@ -29,7 +29,7 @@
 - [x] react-helmet: 상세 사이트의 이동시 Title값을 상세 정보에 맞게 변경합니다.
 - [x] react-query: 개선
 - [x] 코드 리팩토링
-- [ ] API KEY: .env를 통한 암호화
+- [x] API KEY: .env를 통한 암호화 => gitignore를 적용해서 API 숨김처리
 - [ ] 목록 상세 : Swiper 적용하기
 - [ ] 반응형 최적화 구현
 
