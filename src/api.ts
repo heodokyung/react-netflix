@@ -1,7 +1,7 @@
 // 임시 API KEY
 
 import axios from 'axios';
-const API_KEY = '10923b261ba94d897ac6b81148314a3f';
+const API_KEY = 'c0fda2266c408f274b2cc8bf0ac397bd';
 const api = axios.create({
 	baseURL: 'https://api.themoviedb.org/3/',
 	params: {
