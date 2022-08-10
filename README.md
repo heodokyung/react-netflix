@@ -32,7 +32,10 @@
 - [x] API KEY: .env를 통한 암호화 => gitignore를 적용해서 API 숨김처리
 - [ ] 목록 상세 : Swiper 적용하기
 - [ ] 반응형 최적화 구현
+- [ ] 좋아하는 영화, TVShow 스크랩 기능
+- [ ] 검색기능 추가 개선(검색 결과 페이지에서도 검색이 가능하게)
 
 
 ## 사이트 바로가기
 <a href="https://heodokyung.github.io/react-netflix/" target="_blank">[토이프로젝트]React Netflix</a>
+

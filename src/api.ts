@@ -168,12 +168,12 @@ export enum MovieType {
 	'upcoming' = 'upcoming',
 }
 
-// 영화 목록
+// 영화 목록(Slide에서만 사용)
 export const getMovies = async (type: string) => {
 	return await api.get(`movie/${type}`).then((response) => response.data);
 };
 
-// 영화 정보 상세
+// 영화 정보 상세(Slide에서만 사용)
 export const getMovieDetail = async (id: string | undefined) => {
 	return await api.get(`movie/${id}`).then((response) => response.data);
 };
