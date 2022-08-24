@@ -10,7 +10,7 @@
 - 검색창을 통해 원하는 영화, TvShow도 상세히 검색할 수 있습니다.
 
 ## 사이트 미리보기
-<div align="center"><img src="https://user-images.githubusercontent.com/50813871/183362112-b397f506-e10a-411c-a697-6b7ee1641be6.gif" alt="netflix Logo" width="600px" height="auto"></div>
+<div align="center"><img src="https://github.com/heodokyung/react-netflix/blob/main/public/preview_img/1.gif" alt="netflix Logo" width="600px" height="auto"></div>
 <div align="center"><img src="https://user-images.githubusercontent.com/50813871/183362466-cc08da3a-ce6a-4118-bb86-2812844b4489.gif" alt="netflix Logo" width="600px" height="auto"></div>
 
 
