@@ -37,5 +37,5 @@
 
 
 ## 사이트 바로가기
-<a href="https://heodokyung.github.io/react-netflix/" target="_blank">React Netflix</a>
+[`React Netflix`](https://heodokyung.github.io/react-netflix/)
 
